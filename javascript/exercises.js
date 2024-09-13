@@ -65,26 +65,18 @@ export function say(word) {
     return chain;
 }
 // Write your line count function here
-export const meaningfulLineCount = async (fileName) => {
-  
-  const file = await open(fileName,'r');
-  if (!file){
-      return
-  }    
-    let meaningfulLines = 2;
-  
-
+export async function meaningfulLineCount(filename) {
+  let count = 0
+  const file = await open(filename, 'r')
   for await (const line of file.readLines()) {
-    const substr = line.trim()
-    if (substr && substr[0] !== '#') { 
-      meaningfulLines += 1;
+    
+    const trimmed = line.trim()
+    if (trimmed && !trimmed.startsWith('#')) {
+      count++
     }
   }
-  
-  return meaningfulLines; 
-
+  return count
 }
-
 // Write your Quaternion class here
 export class Quaternion {
   constructor(a,b, c,d) {
