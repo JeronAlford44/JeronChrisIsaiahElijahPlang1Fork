@@ -60,3 +60,73 @@ def meaningful_line_count(filename):
 
 
 # Write your Quaternion class here
+
+@dataclass(frozen=True)
+class Quaternion:
+    a: float  
+    b: float  
+    c: float  
+    d: float  
+
+    # requires positional arguments
+    def __init__(self, a: float, b: float, c: float, d: float, /):
+        object.__setattr__(self, 'a', a)
+        object.__setattr__(self, 'b', b)
+        object.__setattr__(self, 'c', c)
+        object.__setattr__(self, 'd', d)
+
+    # adds quarternions
+    def __add__(self, other):
+        if isinstance(other, Quaternion):
+            return Quaternion(
+                self.a + other.a,
+                self.b + other.b,
+                self.c + other.c,
+                self.d + other.d
+            )
+
+    # multiplies quarternions
+    def __mul__(self, other):
+        if isinstance(other, Quaternion):
+            a = self.a * other.a - self.b * other.b - self.c * other.c - self.d * other.d
+            b = self.a * other.b + self.b * other.a + self.c * other.d - self.d * other.c
+            c = self.a * other.c - self.b * other.d + self.c * other.a + self.d * other.b
+            d = self.a * other.d + self.b * other.c - self.c * other.b + self.d * other.a
+            return Quaternion(a, b, c, d)
+
+    # checks if quarternions are equal
+    def __eq__(self, other):
+        if isinstance(other, Quaternion):
+            return (self.a == other.a and self.b == other.b and 
+                    self.c == other.c and self.d == other.d)
+
+    # returns the conjugate of the quaternion
+    @property
+    def conjugate(self):
+        return Quaternion(self.a, -self.b, -self.c, -self.d)
+
+    # returns the coefficients of the quaternion as a tuple.
+    @property
+    def coefficients(self):
+        return (self.a, self.b, self.c, self.d)
+
+    # turns results into readable code
+    def __str__(self):
+        result = ''
+        symbols = ['', 'i', 'j', 'k']  
+        components = [self.a, self.b, self.c, self.d] 
+
+        for idx, value in enumerate(components):
+            if value != 0: 
+                if value > 0 and result:
+                    result += '+'
+                elif value < 0:
+                    result += '-'
+
+                abs_value = abs(value)
+                if abs_value != 1 or idx == 0:
+                    result += str(abs_value)
+
+                result += symbols[idx]
+
+        return result or '0'  
