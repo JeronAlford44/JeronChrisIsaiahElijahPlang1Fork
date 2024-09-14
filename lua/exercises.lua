@@ -20,6 +20,7 @@ function first_then_lower_case(tbl, predicate)
       return string.lower(value)
     end
   end
+-- Return nil if there is no match found
   return nil
 end
 
@@ -39,18 +40,20 @@ function say(word)
   local words = word or ""
   return function(next_word)
     if next_word then
-      -- If next_word is an empty string, then add a space
+      -- If next_word is an empty string, add a space
       if next_word == "" then
         words = words .. " "
       else
         -- Remove leading and trailing spaces from next_word
         next_word = next_word:match("^%s*(.-)%s*$")
+        -- Only append non-empty words
         if #next_word > 0 then
           words = words .. (words == "" and "" or " ") .. next_word
         end
       end
       return say(words)
     else
+      -- Return full sentence when no more words are passed
       return words
     end
   end
