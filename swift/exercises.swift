@@ -62,7 +62,7 @@ enum FileError: Error {
 func meaningfulLineCount(_ filename: String) async -> Result<Int, FileError> {
     do {
         let fileURL = URL(fileURLWithPath: filename)
-        let fileContents = try await String(contentsOf: fileURL)
+        let fileContents = try String(contentsOf: fileURL, encoding: .utf8)
         let lines = fileContents.split(separator: "\n")
         let meaningfulLines = lines.filter { line in
             let trimmedLine = line.trimmingCharacters(in: .whitespaces)
@@ -73,7 +73,6 @@ func meaningfulLineCount(_ filename: String) async -> Result<Int, FileError> {
         return .failure(.noSuchFile)
     }
 }
-
 
 // Write your Quaternion struct here
 
@@ -120,15 +119,49 @@ struct Quaternion: Equatable {
     }
 
     var description: String {
-        var components: [String] = []
-        if a != 0 { components.append("\(a)") }
-        if b != 0 { components.append(b < 0 ? "\(b)i" : "+\(b)i") }
-        if c != 0 { components.append(c < 0 ? "\(c)j" : "+\(c)j") }
-        if d != 0 { components.append(d < 0 ? "\(d)k" : "+\(d)k") }
-        if components.isEmpty { return "0" }
-        let result = components.joined()
-        return result.hasPrefix("+") ? String(result.dropFirst()) : result
+    var components: [String] = []
+
+    if a != 0 {
+        components.append("\(a)")
     }
+
+    if b != 0 {
+        if b == 1 {
+            components.append("+i")
+        } else if b == -1 {
+            components.append("-i")
+        } else {
+            components.append(b < 0 ? "\(b)i" : "+\(b)i")
+        }
+    }
+
+    if c != 0 {
+        if c == 1 {
+            components.append("+j")
+        } else if c == -1 {
+            components.append("-j")
+        } else {
+            components.append(c < 0 ? "\(c)j" : "+\(c)j")
+        }
+    }
+
+    if d != 0 {
+        if d == 1 {
+            components.append("+k")
+        } else if d == -1 {
+            components.append("-k")
+        } else {
+            components.append(d < 0 ? "\(d)k" : "+\(d)k")
+        }
+    }
+
+    if components.isEmpty {
+        return "0"
+    }
+
+    let result = components.joined()
+    return result.hasPrefix("+") ? String(result.dropFirst()) : result
+}
 }
 
 // Conform to CustomStringConvertible for string representation
