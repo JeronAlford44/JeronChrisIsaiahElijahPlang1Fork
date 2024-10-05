@@ -23,58 +23,61 @@ public class Exercises {
     // Write your first then lower case function here
     public static Optional<String> firstThenLowerCase(List<String> strings, Predicate<String> predicate) {
         return strings.stream()
-                      .filter(predicate)
-                      .map(String::toLowerCase)
-                      .findFirst();
+                .filter(predicate)
+                .map(String::toLowerCase)
+                .findFirst();
     }
+
     // Write your say function here
     public static class Say {
         private StringBuilder phrase;
-    
+
         // Start with an empty phrase
         public Say() {
             this.phrase = new StringBuilder();
         }
-    
+
         // Start with an initial word
         public Say(String word) {
             this.phrase = new StringBuilder(word);
         }
-    
+
         // Add a word to the phrase with a space before it
         public Say and(String word) {
-            // Add a space even if word is empty, but only if there's already something in the phrase
             Say newSay = new Say(this.phrase.toString());
-            if (this.phrase.length() > 0 || !word.isEmpty()) {
-                newSay.phrase.append(" ");
-            }
-            newSay.phrase.append(word); // Add a space only if the phrase is not empty
+
+            // Always append a space before the word
+            newSay.phrase.append(" ");
+            newSay.phrase.append(word);
+
             return newSay;
         }
-    
-        // Get the full phase so far
+
+        // Get the full phrase so far
         public String phrase() {
             return this.phrase.toString();
         }
     }
-    
+
     // Creates an empty Say object
     public static Say say() {
         return new Say();
     }
-    
+
     public static Say say(String word) {
         return new Say(word);
     }
+
     // Write your line count function here
     public static long meaningfulLineCount(String filename) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             return reader.lines()
-                         .filter(line -> !line.trim().isEmpty())    // Skip empty lines
-                         .filter(line -> !line.trim().startsWith("#")) // Skip comments
-                         .count();  // Count the remaining lines
+                    .filter(line -> !line.trim().isEmpty()) // Skip empty lines
+                    .filter(line -> !line.trim().startsWith("#")) // Skip comments
+                    .count(); // Count the remaining lines
         }
-    }}
+    }
+}
 
 // Write your Quaternion record class here
 record Quaternion(double a, double b, double c, double d) {
@@ -88,13 +91,12 @@ record Quaternion(double a, double b, double c, double d) {
     // Adds two quaternions together
     public Quaternion plus(Quaternion q) {
         return new Quaternion(
-            this.a + q.a, 
-            this.b + q.b, 
-            this.c + q.c, 
-            this.d + q.d
-        );
+                this.a + q.a,
+                this.b + q.b,
+                this.c + q.c,
+                this.d + q.d);
     }
-    
+
     // Multiplies two quaternions together
     public Quaternion times(Quaternion q) {
         double newA = this.a * q.a - this.b * q.b - this.c * q.c - this.d * q.d;
@@ -118,25 +120,54 @@ record Quaternion(double a, double b, double c, double d) {
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-        if (a != 0) result.append(a);
-        if (b != 0) result.append((b > 0 && result.length() > 0 ? "+" : "")).append(b).append("i");
-        if (c != 0) result.append((c > 0 && result.length() > 0 ? "+" : "")).append(c).append("j");
-        if (d != 0) result.append((d > 0 && result.length() > 0 ? "+" : "")).append(d).append("k");
-        
+
+        if (a != 0) {
+            result.append(a);
+        }
+        if (b != 0) {
+            if (b == 1) {
+                result.append(result.length() > 0 ? "+i" : "i");
+            } else if (b == -1) {
+                result.append("-i");
+            } else {
+                result.append(b < 0 ? b + "i" : (result.length() > 0 ? "+" : "") + b + "i");
+            }
+        }
+        if (c != 0) {
+            if (c == 1) {
+                result.append(result.length() > 0 ? "+j" : "j");
+            } else if (c == -1) {
+                result.append("-j");
+            } else {
+                result.append(c < 0 ? c + "j" : (result.length() > 0 ? "+" : "") + c + "j");
+            }
+        }
+        if (d != 0) {
+            if (d == 1) {
+                result.append(result.length() > 0 ? "+k" : "k");
+            } else if (d == -1) {
+                result.append("-k");
+            } else {
+                result.append(d < 0 ? d + "k" : (result.length() > 0 ? "+" : "") + d + "k");
+            }
+        }
+
         return result.length() > 0 ? result.toString() : "0";
     }
 
-// Static constants for ZERO, I, J, K
-public static final Quaternion ZERO = new Quaternion(0, 0, 0, 0);
-public static final Quaternion I = new Quaternion(0, 1, 0, 0);
-public static final Quaternion J = new Quaternion(0, 0, 1, 0);
-public static final Quaternion K = new Quaternion(0, 0, 0, 1);
+    // Static constants for ZERO, I, J, K
+    public static final Quaternion ZERO = new Quaternion(0, 0, 0, 0);
+    public static final Quaternion I = new Quaternion(0, 1, 0, 0);
+    public static final Quaternion J = new Quaternion(0, 0, 1, 0);
+    public static final Quaternion K = new Quaternion(0, 0, 0, 1);
 }
 
 // Write your BinarySearchTree sealed interface and its implementations here
 sealed interface BinarySearchTree permits Empty, Node {
     BinarySearchTree insert(String value);
+
     boolean contains(String value);
+
     int size();
 }
 
