@@ -30,12 +30,12 @@ fun firstThenLowerCase(sequence: List<String>, predicate: (String) -> Boolean): 
 
 // Write your say function here
 class say(val firstWord: String = "") {
-    private var accumulatedPhrase = firstWord
+    private var accumulatedPhrase: String = firstWord
 
    
     fun and(word: String): say {
-        accumulatedPhrase += " $word"
-        return this
+        val newPhrase = accumulatedPhrase + " " + word
+        return say(newPhrase)
     }
 
     val phrase: String
