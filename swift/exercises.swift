@@ -167,4 +167,88 @@ struct Quaternion: Equatable {
 // Conform to CustomStringConvertible for string representation
 extension Quaternion: CustomStringConvertible {}
 
+
 // Write your Binary Search Tree enum here
+
+enum BinarySearchTree: CustomStringConvertible {
+    case empty
+    indirect case node(value: String, left: BinarySearchTree, right: BinarySearchTree)
+
+    // Insert a new value into the binary search tree, creating a new tree
+    func insert(_ newValue: String) -> BinarySearchTree {
+        switch self {
+        case .empty:
+            let result = BinarySearchTree.node(value: newValue, left: .empty, right: .empty)
+            return result
+        case let .node(value, left, right):
+            if newValue < value {
+                let newLeft = left.insert(newValue)
+                return BinarySearchTree.node(value: value, left: newLeft, right: right)
+            } else if newValue > value {
+                let newRight = right.insert(newValue)
+                return BinarySearchTree.node(value: value, left: left, right: newRight)
+            } else {
+                return self // No duplicates
+            }
+        }
+    }
+
+    // String representation of the tree
+    var description: String {
+        return description(isRoot: true)
+    }
+
+    // Helper method for wrapping the final node only
+    private func description(isRoot: Bool) -> String {
+        switch self {
+        case .empty:
+            return ""  // Return an empty string for an empty node
+        case let .node(value, left, right):
+            let leftDescription = left.description(isRoot: false)
+            let rightDescription = right.description(isRoot: false)
+
+            let result: String
+            if leftDescription.isEmpty && rightDescription.isEmpty {
+                result = "\(value)"  // No children, just return the node's value
+            } else if rightDescription.isEmpty {
+                result = "(\(leftDescription))\(value)"  // Only left child exists
+            } else if leftDescription.isEmpty {
+                result = "\(value)(\(rightDescription))"  // Only right child exists
+            } else {
+                result = "(\(leftDescription))\(value)(\(rightDescription))"  // Both children exist
+            }
+
+            // Only wrap the final result in parentheses if it's the root node
+            return isRoot ? "(\(result))" : result
+        }
+    }
+
+    // Check if the tree contains a value
+    func contains(_ value: String) -> Bool {
+        switch self {
+        case .empty:
+            return false
+        case let .node(nodeValue, left, right):
+            if value == nodeValue {
+                return true
+            } else if value < nodeValue {
+                return left.contains(value)
+            } else {
+                return right.contains(value)
+            }
+        }
+    }
+
+    // Computed property to get the size of the tree
+    var size: Int {
+        switch self {
+        case .empty:
+            return 0
+        case let .node(_, left, right):
+            return 1 + left.size + right.size
+        }
+    }
+}
+
+
+
