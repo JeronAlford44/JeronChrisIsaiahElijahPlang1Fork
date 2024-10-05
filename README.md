@@ -5,11 +5,8 @@ Isaiah P. - Python
 
 Description: The purpose of this assignment is to get familiar with the syntax and objects available within popular languages including Lua, JavaScript, and Python. We were tasked with building 4 functions and a Quaternion Class.
 
-
-
-
 Homework 2.
-Jeron A. - Kotlin
+Jeron A., Isaiah P. - Kotlin
 Chris C., Isaiah P. - Java
 Elijah S., Isaiah P. - Swift
 
