@@ -75,7 +75,7 @@ export function volume(shape: Shape): number{
   return (4 / 3) * Math.PI * (shape.radius**3)
 }
 
-//insertion, lookup, count, inorder traversal, string description of tree
+
 export interface BinarySearchTree<T> {
   size(): number;
   insert(value: T): BinarySearchTree<T>;
@@ -101,7 +101,7 @@ class Node<T> implements BinarySearchTree<T> {
     } else if (value > this.value) {
       return new Node(this.left, this.value, this.right.insert(value));
     }
-    return this; // Ignore duplicate value
+    return this;
   }
 
   contains(value: T): boolean {
@@ -121,7 +121,12 @@ class Node<T> implements BinarySearchTree<T> {
   }
 
   toString(): string {
-    return `(${this.left}${this.value}${this.right})`;
+    
+    const leftSubstring = this.left.toString();
+    const rightSubstring = this.right.toString();
+    const leftPart = leftSubstring !== '()' ? leftSubstring : ''
+    const rightPart = rightSubstring !== '()' ? rightSubstring : ''
+    return `(${leftPart}${this.value}${rightPart})`;
   }
 }
 
@@ -139,10 +144,10 @@ export class Empty<T> implements BinarySearchTree<T> {
   }
 
   *inorder(): Iterable<T> {
-    // No values in an empty tree
+    
   }
 
   toString(): string {
-    return ``;
+    return `()`;
   }
 }
