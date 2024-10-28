@@ -75,57 +75,79 @@ export function volume(shape: Shape): number{
   return (4 / 3) * Math.PI * (shape.radius**3)
 }
 
-//insertion, lookup, count, inorder traversal, string description of tree
+
 export interface BinarySearchTree<T> {
-  size(): number
-  insert(value: T): BinarySearchTree<T>
-  contains(value: T): boolean
-  inorder(): Iterable<T>
-
+  size(): number;
+  insert(value: T): BinarySearchTree<T>;
+  contains(value: T): boolean;
+  inorder(): Iterable<T>;
+  toString(): string;
 }
-export class Node<T> implements BinarySearchTree<T> {
-  constructor(
-    public left: BinarySearchTree<T> | null,
-    public value: T,
-    public right: BinarySearchTree<T> | null
-  ) {}
-  size(): number{
-    return 0
-  }
-  insert(value:T): BinarySearchTree<T>{
 
+class Node<T> implements BinarySearchTree<T> {
+  constructor(
+    public left: BinarySearchTree<T>, 
+    public value: T, 
+    public right: BinarySearchTree<T>
+  ) {}
+
+  size(): number {
+    return 1 + this.left.size() + this.right.size();
   }
-  contains(value: T): boolean{
+
+  insert(value: T): BinarySearchTree<T> {
+    if (value < this.value) {
+      return new Node(this.left.insert(value), this.value, this.right);
+    } else if (value > this.value) {
+      return new Node(this.left, this.value, this.right.insert(value));
+    }
+    return this;
+  }
+
+  contains(value: T): boolean {
+    if (value === this.value) {
+      return true;
+    } else if (value < this.value) {
+      return this.left.contains(value);
+    } else {
+      return this.right.contains(value);
+    }
+  }
+
+  *inorder(): Iterable<T> {
+    yield* this.left.inorder();
+    yield this.value;
+    yield* this.right.inorder();
+  }
+
+  toString(): string {
+    
+    const leftSubstring = this.left.toString();
+    const rightSubstring = this.right.toString();
+    const leftPart = leftSubstring !== '()' ? leftSubstring : ''
+    const rightPart = rightSubstring !== '()' ? rightSubstring : ''
+    return `(${leftPart}${this.value}${rightPart})`;
+  }
+}
+
+export class Empty<T> implements BinarySearchTree<T> {
+  size(): number {
+    return 0;
+  }
+
+  insert(value: T): BinarySearchTree<T> {
+    return new Node(new Empty(), value, new Empty());
+  }
+
+  contains(value: T): boolean {
+    return false;
+  }
+
+  *inorder(): Iterable<T> {
     
   }
-  inorder(): Iterable<T> {
-      
+
+  toString(): string {
+    return `()`;
   }
 }
-export class Empty<T> implements BinarySearchTree<T>{
-  treeSize = 0
-  size(): number {
-    return 0
-  }
-  insert(value: T): BinarySearchTree<T>{
-    if (this.size() == 0){
-      return new Node(new Empty(), value, new Empty())
-    }
-    switch(value){
-      case
-    }
-
-    this.treeSize +=1
-   
-  }
-  contains(value: T): boolean{
-    return false
-  }
-  *inorder(): Iterable<T> {
-    return null
-      
-  }
-
-}
-
-// Write your binary search tree implementation here
