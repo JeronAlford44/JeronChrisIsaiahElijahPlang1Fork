@@ -17,4 +17,4 @@ Jeron A. - TypeScript
 Isaiah P., Chris C. - Haskell
 Elijah S. - OCaml
 
-Description: The purpose of this assignment is to get familiar with the syntax and objects available within popular languages including TypeScript, Haskell, and OCaml. We were tasked with building 5 functions and implementing a persistent Binary Search Tree with enforced information hiding.
+Description: The purpose of this assignment is to get familiar with the syntax and objects available within popular languages including TypeScript, Haskell, and OCaml. We were tasked with building 5 functions and implementing a persistent Binary Search Tree with information hiding.
