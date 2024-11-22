@@ -1,20 +1,38 @@
 pub struct Stack<T> {
-    // stack items are private by default
-    items: Vec<T>,
+    items: Vec<T>, // Private stack items 
 }
 
 impl<T> Stack<T> {
-    // Implement new
 
-    // Implement push
+    // Creating a new empty stack 
+    pub fn new() -> Self {
+        Stack { items: Vec::new() }
+    }
 
-    // Implement pop
+    // Pushes item onto the stack 
+    pub fn push(&mut self, item: T) {
+        self.items.push(item);
+    }
 
-    // Implement peek
+    // Push item off the stack
+    pub fn pop(&mut self) -> Option<T> {
+        self.items.pop()
+    }
 
-    // Implement is_empty
+    // Reference to the top item of the stack
+    pub fn peek(&self) -> Option<&T> {
+        self.items.last()
+    }
 
-    // Implement len
+    //Checking if the stack is empty
+    pub fn is_empty(&self) -> bool {
+        self.items.is_empty()
+    }
+
+    // Returns the number of items in the stack
+    pub fn len(&self) -> usize {
+        self.items.len()
+    }
 }
 
 #[cfg(test)]
