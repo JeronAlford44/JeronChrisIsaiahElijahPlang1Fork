@@ -25,3 +25,8 @@ Chris C. - C++,
 Elijah S. - Rust
 
 Description: The purpose of this assignment is to implement a user-defined stack data structure in C, C++, and Rust. For C, the stack stores strings; for C++ and Rust, the stack is generic. In C and C++, the stack uses manually-managed arrays following best practices for information hiding. In Rust, the stack wraps a vector, leveraging its built-in resizing behavior.
+
+Homework 5.
+Isaiah P, Jeron A, Chris C., Elijah S. -- GO
+
+Description: The purpose of this assignment is to simulate a restaurant ordering process in GO. We used Go concurrency and the WaitGroup feature to allow for multiple different threads to be executed at the same time, where the threads handled different processes.
